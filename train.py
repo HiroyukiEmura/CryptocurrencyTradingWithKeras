@@ -13,7 +13,6 @@ from sklearn.preprocessing import StandardScaler
 from collections import defaultdict
 from sklearn.externals import joblib
 from sklearn.metrics import accuracy_score, confusion_matrix
-from pprint import pprint
 
 
 def exponential_moving_average(ps, look_back):
@@ -54,9 +53,6 @@ class MovingWindowGenerator(keras.utils.Sequence):
     def __getitem__(self, index):
         example_indices_for_current_batch = self.example_index_list[index * self.batch_size:(index + 1) * self.batch_size]
         return self.__data_generation(example_indices_for_current_batch)
-
-    def on_epoch_begin(self):
-        pass
 
     def on_epoch_end(self):
         if self.shuffle:
@@ -144,18 +140,6 @@ def build_simple_CNN(hyperparameter_dict):
     return model
 
 
-def set_up_numpy_and_pandas_display_options():
-    np.set_printoptions(linewidth=1000000)
-    np.set_printoptions(precision=10)
-    np.set_printoptions(threshold=np.inf)
-    pd.set_option('display.max_rows', 500000)
-    pd.set_option('display.max_columns', 500)
-    pd.set_option('display.width', 100000)
-
-
-set_up_numpy_and_pandas_display_options()
-
-
 def balance_and_generate_index_lists(sequence, target_series, window_size):
     window_index_dictionary = defaultdict(list)
     unbalanced_window_index_list = []
@@ -209,8 +193,6 @@ hyperparameter_dict = {
     'fc_layers': [1024, 1024],
     'activation': 'relu',
 }
-
-pprint(hyperparameter_dict)
 
 # Extracting values from the hyperparameter dictionary
 window_size = hyperparameter_dict['window_size']
